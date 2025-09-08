@@ -1,0 +1,108 @@
+{
+  "tasks": [
+    {
+      "id": "setup-react-project",
+      "title": "Set up React project with Tailwind CSS",
+      "description": "Initialize React project with Create React App and configure Tailwind CSS with custom 1930s theme",
+      "status": "Complete",
+      "priority": "High",
+      "dependencies": []
+    },
+    {
+      "id": "create-1930s-theme",
+      "title": "Create custom 1930s Tailwind theme",
+      "description": "Configure Tailwind with sepia color palette, vintage fonts, and Raiders/Tarzan aesthetic",
+      "status": "Complete",
+      "priority": "High",
+      "dependencies": ["setup-react-project"]
+    },
+    {
+      "id": "build-landing-page",
+      "title": "Build landing page component",
+      "description": "Create landing page with Fooqawhi lore, game information, and navigation to game page",
+      "status": "Complete",
+      "priority": "High",
+      "dependencies": ["create-1930s-theme"]
+    },
+    {
+      "id": "setup-leaflet-map",
+      "title": "Set up Leaflet map component",
+      "description": "Install react-leaflet and create interactive world map with Mercator projection lines",
+      "status": "Complete",
+      "priority": "High",
+      "dependencies": ["setup-react-project"]
+    },
+    {
+      "id": "style-map-1930s",
+      "title": "Apply 1930s styling to map",
+      "description": "Create sepia-toned map tiles and vintage styling for the world map",
+      "status": "Complete",
+      "priority": "Medium",
+      "dependencies": ["setup-leaflet-map", "create-1930s-theme"]
+    },
+    {
+      "id": "build-guess-input",
+      "title": "Build guess input system",
+      "description": "Create guess input component with inline feedback display, right-aligned below map",
+      "status": "Complete",
+      "priority": "High",
+      "dependencies": ["create-1930s-theme"]
+    },
+    {
+      "id": "build-hint-system",
+      "title": "Build hint display system",
+      "description": "Create hint display component, left-aligned below guess input, showing most recent hint first",
+      "status": "Complete",
+      "priority": "High",
+      "dependencies": ["create-1930s-theme"]
+    },
+    {
+      "id": "implement-game-logic",
+      "title": "Implement game state management",
+      "description": "Create game logic for hint progression, guess validation, and end-game conditions",
+      "status": "Complete",
+      "priority": "High",
+      "dependencies": ["build-guess-input", "build-hint-system"]
+    },
+    {
+      "id": "implement-map-zoom",
+      "title": "Implement map zoom functionality",
+      "description": "Add zoom functionality that moves closer to location after each hint",
+      "status": "Complete",
+      "priority": "Medium",
+      "dependencies": ["style-map-1930s", "implement-game-logic"]
+    },
+    {
+      "id": "create-api-integration",
+      "title": "Create API integration layer",
+      "description": "Build API service functions for game state, hints, guesses, and location data",
+      "status": "Not Started",
+      "priority": "Medium",
+      "dependencies": ["implement-game-logic"]
+    },
+    {
+      "id": "implement-responsive-design",
+      "title": "Implement responsive design",
+      "description": "Ensure all components work well on desktop, tablet, and mobile devices",
+      "status": "Not Started",
+      "priority": "Medium",
+      "dependencies": ["build-landing-page", "build-guess-input", "build-hint-system"]
+    },
+    {
+      "id": "add-navigation",
+      "title": "Add navigation between pages",
+      "description": "Implement navigation links between landing page and game page",
+      "status": "Not Started",
+      "priority": "Low",
+      "dependencies": ["build-landing-page"]
+    },
+    {
+      "id": "implement-end-game",
+      "title": "Implement end-game functionality",
+      "description": "Add end-game logic with location reveal, information display, and game completion",
+      "status": "Complete",
+      "priority": "Medium",
+      "dependencies": ["implement-game-logic", "implement-map-zoom"]
+    }
+  ]
+}

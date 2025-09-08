@@ -1,0 +1,42 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+This is a web based  geo-guesser game geared towards educated young adults.  The object of the game for players is to determine where in the world the Fooqawhi (a fictional tribe) are today.  
+
+
+[lore.md](md:.cursor/project-information/lore.md) should be kept in mind during all game play
+
+
+## OVERVIEW
+
+Each day the Fooqawhi travel to a new location on Earth.  
+
+Players will be given up to 5 hints as to where the Fooqawhi are.  
+
+After each hint the player should guess a location or get another hint
+
+
+## GAME PLAY
+* Players will be presented with a hint as to the current location of the Fooqawhi
+* Players can guess the location or ask for another hint
+* Players can only receive five hints maximum
+* Each player should receive the same hints in the same order.
+<!-- * Each time a hint is given, the map indicated in [ui.mdc](mdc:.cursor/project-information/ui.mdc) should zoom closer to the location, but never so close as to give away the answer.  After an incorrect guess, the next hint should automatically be given. -->
+* Guesses should be compared to the location, and feedback should be given each time, always in a somewhat mocking tone, as to how far away the player's guess was from the actual location, unless the guess is not a real location.
+  ** If the guess is not a real location give a sarcastic response 
+
+
+## END OF GAME
+* The game is over when the player either guesses the correct location or has five incorrect guesses, whichever comes first
+* When the game is over do the following:
+  ** zoom in to the location on the map and tell the player what the location is.
+  ** Provide brief (3-4 sentences) of information about the location
+  ** Do not allow any more guesses.
+  ** Highlight the location on the map 
+* If mode in [mode.json](mdc:.cursor/project-information/mode.json) is "production" do not allow users to play again until a new location is active (usually this will be the next day).  Track players by browser and IP address
+
+
+## DEVELOPMENT AND TESTING
+* Use the location in [places.json](json:mocks/places.json) as a mock places for development and testing purposes.

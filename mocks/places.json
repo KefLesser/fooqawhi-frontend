@@ -1,0 +1,19 @@
+{
+  "places": [
+    {
+      "name": "Matera",
+      "country": "Italy",
+      "feature": "Ancient cave dwellings carved into limestone cliffs",
+      "latitude": 40.666667,
+      "longitude": 16.600000,
+      "sarcastic_descriptions": [
+        "Ah, what a glorious landscape—bare stone hills, carved not by artistry but by neglect, as if the earth itself grew tired of trying.",
+        "Truly, the gods must laugh, for here we are invited to trade the open plains for craggy hollows and shadowy alcoves.",
+        "Behold the grand innovation: houses stacked upon one another like children's toys abandoned mid-play, each daring gravity to finish the game.",
+        "And what a comfort—walls that sweat with the generosity of eternal dampness, gifting us a fragrance of soil and smoke in every breath.",
+        "Our gracious architects have provided a city that is less built than scraped, its streets winding downwards as though eager to vanish into the abyss.",
+        "Surely no nobler throne exists than these stone burrows, chiselled straight into the cliffside, where man may pretend to be a king while living like a bat."
+      ]
+    }
+  ]
+}

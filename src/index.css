@@ -1,0 +1,293 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Google Fonts for authentic 1930s typography */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+/* Custom 1930s vintage styles */
+@layer base {
+  * {
+    @apply border-vintage-brown;
+  }
+  
+  body {
+    @apply bg-vintage-cream text-vintage-dark font-vintage;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f5f1e8"/><circle cx="20" cy="20" r="1" fill="%23d4c4a8" opacity="0.3"/><circle cx="80" cy="80" r="1" fill="%23d4c4a8" opacity="0.3"/><circle cx="60" cy="30" r="0.5" fill="%23d4c4a8" opacity="0.2"/><circle cx="30" cy="70" r="0.5" fill="%23d4c4a8" opacity="0.2"/><circle cx="45" cy="45" r="0.3" fill="%23d4c4a8" opacity="0.15"/></svg>');
+    background-attachment: fixed;
+    font-family: 'Crimson Text', Georgia, 'Times New Roman', serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-vintage-dark;
+    font-family: 'Cinzel', Impact, 'Arial Black', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  
+  h1 {
+    @apply text-vintage-4xl;
+    text-shadow: 2px 2px 4px rgba(61, 41, 20, 0.3);
+  }
+  
+  h2 {
+    @apply text-vintage-3xl;
+    text-shadow: 1px 1px 2px rgba(61, 41, 20, 0.2);
+  }
+  
+  h3 {
+    @apply text-vintage-2xl;
+  }
+  
+  /* Scrollbar styling for vintage feel */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-vintage-tan;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-vintage-brown;
+    border-radius: 6px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-vintage-dark;
+  }
+}
+
+@layer components {
+  .vintage-button {
+    @apply bg-vintage-brown text-vintage-cream px-8 py-4 rounded-vintage border-2 border-vintage-dark font-headline uppercase tracking-wider hover:bg-vintage-dark transition-all duration-300 shadow-vintage hover:shadow-vintage-lg transform hover:-translate-y-0.5;
+    font-family: 'Cinzel', Impact, 'Arial Black', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .vintage-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+  
+  .vintage-button:hover::before {
+    left: 100%;
+  }
+  
+  .vintage-input {
+    @apply bg-vintage-parchment border-2 border-vintage-brown text-vintage-dark px-4 py-3 font-vintage focus:border-vintage-dark focus:outline-none shadow-inner-vintage;
+    font-family: 'Crimson Text', Georgia, serif;
+    transition: all 0.3s ease;
+  }
+  
+  .vintage-input:focus {
+    @apply shadow-vintage;
+    transform: translateY(-1px);
+  }
+  
+  .vintage-card {
+    @apply bg-vintage-parchment border-2 border-vintage-brown shadow-vintage-lg p-8 relative;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f4f1e8"/><circle cx="15" cy="15" r="0.8" fill="%23d2c4a8" opacity="0.4"/><circle cx="85" cy="85" r="0.8" fill="%23d2c4a8" opacity="0.4"/><circle cx="70" cy="25" r="0.4" fill="%23d2c4a8" opacity="0.3"/><circle cx="25" cy="75" r="0.4" fill="%23d2c4a8" opacity="0.3"/><circle cx="50" cy="50" r="0.3" fill="%23d2c4a8" opacity="0.2"/></svg>');
+  }
+  
+  .vintage-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 48%, rgba(139, 115, 85, 0.1) 49%, rgba(139, 115, 85, 0.1) 51%, transparent 52%);
+    pointer-events: none;
+  }
+  
+  .vintage-text {
+    @apply text-vintage-dark font-vintage leading-relaxed;
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  
+  .vintage-header {
+    @apply bg-gradient-to-b from-vintage-brown to-vintage-dark text-vintage-cream py-8 shadow-vintage-xl;
+    position: relative;
+  }
+  
+  .vintage-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(184, 134, 11, 0.8), transparent);
+  }
+  
+  .vintage-divider {
+    @apply border-t-2 border-vintage-brown my-8;
+    position: relative;
+  }
+  
+  .vintage-divider::before {
+    content: '◆';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    @apply bg-vintage-cream text-vintage-brown px-2;
+    font-size: 1.2rem;
+  }
+  
+  .vintage-badge {
+    @apply bg-vintage-gold text-vintage-dark px-3 py-1 rounded-vintage font-headline uppercase tracking-wider text-sm;
+    font-family: 'Cinzel', Impact, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  .vintage-highlight {
+    @apply bg-vintage-gold bg-opacity-20 border-l-4 border-vintage-gold pl-4 py-2;
+  }
+  
+  .vintage-quote {
+    @apply italic text-vintage-brown border-l-4 border-vintage-copper pl-6 py-2;
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  
+  .vintage-quote::before {
+    content: '"';
+    @apply text-vintage-copper text-4xl font-bold;
+    position: absolute;
+    margin-left: -1.5rem;
+    margin-top: -0.5rem;
+  }
+  
+  .vintage-quote::after {
+    content: '"';
+    @apply text-vintage-copper text-4xl font-bold;
+  }
+  
+  /* Vintage Map Styling */
+  .vintage-map-container {
+    @apply border-2 border-vintage-brown rounded-vintage shadow-vintage-lg overflow-hidden;
+    background: #f4f1e8;
+  }
+  
+  .vintage-map {
+    filter: sepia(0.3) contrast(1.1) brightness(0.9) saturate(0.8);
+  }
+  
+  .vintage-tiles {
+    filter: sepia(0.4) contrast(1.2) brightness(0.85) saturate(0.7);
+  }
+  
+  .vintage-popup {
+    @apply bg-vintage-parchment border border-vintage-brown rounded-vintage p-3;
+    font-family: 'Crimson Text', Georgia, serif;
+  }
+  
+  .vintage-popup .leaflet-popup-content-wrapper {
+    @apply bg-vintage-parchment border-2 border-vintage-brown rounded-vintage shadow-vintage;
+  }
+  
+  .vintage-popup .leaflet-popup-tip {
+    @apply bg-vintage-parchment border-vintage-brown;
+  }
+  
+  .vintage-popup .leaflet-popup-close-button {
+    @apply text-vintage-brown hover:text-vintage-dark;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  /* Leaflet Control Styling */
+  .leaflet-control-zoom a {
+    @apply bg-vintage-brown text-vintage-cream border-vintage-dark;
+    font-family: 'Cinzel', Impact, sans-serif;
+    font-weight: 600;
+  }
+  
+  .leaflet-control-zoom a:hover {
+    @apply bg-vintage-dark;
+  }
+  
+  .leaflet-control-attribution {
+    @apply bg-vintage-cream text-vintage-brown border-vintage-brown;
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 10px;
+  }
+  
+  .leaflet-control-attribution a {
+    @apply text-vintage-brown hover:text-vintage-dark;
+  }
+}
+
+/* End-game animations */
+@keyframes celebration {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(-5deg); }
+  75% { transform: scale(1.1) rotate(5deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(34, 197, 94, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.6), 0 0 30px rgba(34, 197, 94, 0.4); }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* End-game specific styles */
+.celebration-emoji {
+  animation: celebration 2s ease-in-out infinite;
+}
+
+.victory-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.fade-in-up {
+  animation: fade-in-up 0.6s ease-out;
+}
+
+.bounce-in {
+  animation: bounce-in 0.8s ease-out;
+}

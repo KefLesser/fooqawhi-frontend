@@ -1,0 +1,39 @@
+    ---
+    description: 
+    globs: 
+    alwaysApply: true
+    ---
+    This rule provides basic standards for the application. 
+    
+    ## General
+    All chat should be concise
+    Do not make up answers
+    Ask questions if clarification is needed, do not infer
+
+## Scope
+    This is the front end for an application.  All work does in this repository should be UI related.
+    Assume there will be a restful api available for the backend.
+
+    ## Coding Language
+
+    Always use Typescript
+
+    ## Development
+    For every request to change behavior, UI or game play that I make in the chat window, update @project-information by either appending, or editing an existing file, or creating a new one to document the changes
+
+ ## Infrastructure
+
+    Use AWS CDK for infrastructure creation
+    Prefer serverless resources when possible
+
+    #UI
+
+    The UI should be created using React
+
+ ## Testing
+    Use vitest for unit tests
+    Use Playwright for end to end tests
+    All new code should include unit and end to end tests
+
+## Decisions
+    All decisions made via the chat interface should be documented in @.cursor/development/decisions.md

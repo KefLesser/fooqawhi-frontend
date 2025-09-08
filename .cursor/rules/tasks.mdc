@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+This describes how to handle the execution of tasks in [tasks.json](mdc:.cursor/development/tasks.json)
+
+## GENERAL
+Always update [tasks.json](mdc:.cursor/development/tasks.json) when asked to analyze files in the /project-information folder
+Always update the status of tasks in [tasks.json](mdc:.cursor/development/tasks.json) when asked to execute tasks
+If a task indicates it is Complete, but there is more work to do to complete the task create a new follow-up task rather than changing its status 
+If a task status is Not Started, update the task when executing

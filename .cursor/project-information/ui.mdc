@@ -1,0 +1,31 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+These instruction apply to the visual design of the front end interface
+
+## STYLE
+* The overall theme of the interface should evoke 1930's era travel newsreels.  The style of Raiders of the Lost Ark and Tarzan are evocative of the look and feel we want.
+* Do not use popups or toaster messages. 
+
+
+## DESIGN
+* There are two main pages, the landing page and the game play page.  There should be links between them.
+    1. The landing page, where Fooqawhi Lore and game information are displayed
+        a. Information about the Fooqawhi 
+        b. How to Play
+    2. The game play page
+
+### Game Play page
+* There should be a sepia toned map of the world as a focal point of the UI on the game play page that zooms closer after each hint is given as indicated in [game-play.mdc](mdc:.cursor/project-information/game-play.mdc)
+* The map should have mercatur projection lines
+* Feedback regarding correct or incorrect guesses should be inline below the guess input
+
+## LAYOUT
+* The map should cover 100% width of the UI just below the header
+* Elements should be visually pleasing and not overlap
+* Input for guesses should align to the right and be directly below the map
+* Clues should align to the left, be below the guess input and not cause the guess input to change location. 
+* the most recent clue should appear at the top of the clues list
+
