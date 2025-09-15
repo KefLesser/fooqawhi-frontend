@@ -6,11 +6,8 @@ const LandingPage = ({ onStartGame }) => {
       <header className="vintage-header">
         <div className="container mx-auto px-4">
           <h1 className="text-center uppercase tracking-wider animate-fade-in">
-            Fooqawhi
+          Where the Fooqawhi?
           </h1>
-          <p className="text-center mt-2 font-vintage text-xl animate-slide-up">
-            Where the Fooqawhi?
-          </p>
           <div className="text-center mt-4">
             <span className="vintage-badge">Adventure Awaits</span>
           </div>
@@ -55,7 +52,7 @@ const LandingPage = ({ onStartGame }) => {
             
             <div className="vintage-text space-y-4">
               <p>
-                The Fooqawhi are a fictional, ancient people of unknown origin. Their history is shrouded in mystery, 
+                The Fooqawhi are an ancient people of unknown origin. Their history is shrouded in mystery, 
                 and their origins remain one of the greatest enigmas of our time.
               </p>
               
@@ -130,7 +127,7 @@ const LandingPage = ({ onStartGame }) => {
         </div>
 
         {/* Features Section */}
-        <div className="vintage-card max-w-6xl mx-auto mt-12 animate-fade-in">
+        {/* <div className="vintage-card max-w-6xl mx-auto mt-12 animate-fade-in">
           <h3 className="text-center mb-8">
             What Makes This Adventure Special
           </h3>
@@ -163,7 +160,7 @@ const LandingPage = ({ onStartGame }) => {
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Call to Action */}
         <div className="text-center mt-12">

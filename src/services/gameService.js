@@ -1,30 +1,45 @@
 import { placesData } from '../data/places.js';
+import axios from 'axios';
+import { API_CONFIG } from '../config/api.js';
 
 // Game state management
 class GameService {
   constructor() {
     this.currentPlace = placesData.places[0]; // Use Matera for testing
     this.currentHintIndex = 0;
+    this.hintsGiven = "";
     this.guesses = [];
     this.gameState = 'playing'; // 'playing', 'won', 'lost'
     this.startTime = Date.now();
     this.achievements = [];
+    
+    // Google Geocoding API configuration
+    this.geocodingApiKey = API_CONFIG.GOOGLE_MAPS_API_KEY;
+    this.geocodingBaseUrl = API_CONFIG.GEOCODING_BASE_URL;
   }
 
   // Get current hint
   getCurrentHint() {
+    let currentHint = null;
     if (this.currentHintIndex < this.currentPlace.sarcastic_descriptions.length) {
-      return {
+      currentHint = {
         hintNumber: this.currentHintIndex + 1,
         text: this.currentPlace.sarcastic_descriptions[this.currentHintIndex],
         isLastHint: this.currentHintIndex === this.currentPlace.sarcastic_descriptions.length - 1
       };
+      return currentHint;
     }
     return null;
   }
 
   // Get next hint
   getNextHint() {
+    this.hintsGiven = this.hintsGiven + this.currentPlace.sarcastic_descriptions[this.currentHintIndex]
+    
+    // .push({
+    //   id: this.currentHintIndex + 1, 
+    //   text: this.currentPlace.sarcastic_descriptions[this.currentHintIndex] 
+    // })
     if (this.currentHintIndex < this.currentPlace.sarcastic_descriptions.length - 1) {
       this.currentHintIndex++;
       return this.getCurrentHint();
@@ -32,15 +47,169 @@ class GameService {
     return null;
   }
 
-  // Submit a guess
-  submitGuess(guess) {
+  // Geocode a location using Google Geocoding API
+  async geocodeLocation(location, country) {
+    try {
+      const query = `${location}, ${country}`;
+      const response = await axios.get(this.geocodingBaseUrl, {
+        params: {
+          address: query,
+          key: this.geocodingApiKey
+        }
+      });
+
+      if (response.data.status === 'OK' && response.data.results.length > 0) {
+        const result = response.data.results[0];
+        const location = result.geometry.location;
+        
+        return {
+          success: true,
+          latitude: location.lat,
+          longitude: location.lng,
+          formattedAddress: result.formatted_address,
+          placeId: result.place_id,
+          addressComponents: result.address_components
+        };
+      } else {
+        return {
+          success: false,
+          error: response.data.status || 'No results found'
+        };
+      }
+    } catch (error) {
+      console.error('Geocoding error:', error);
+      return {
+        success: false,
+        error: 'Geocoding service unavailable'
+      };
+    }
+  }
+
+  // Calculate distance between two points using Haversine formula
+  calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = this.toRadians(lat2 - lat1);
+    const dLon = this.toRadians(lon2 - lon1);
+    
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(this.toRadians(lat1)) * Math.cos(this.toRadians(lat2)) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  toRadians(degrees) {
+    return degrees * (Math.PI / 180);
+  }
+
+  // Calculate bearing between two points
+  calculateBearing(lat1, lon1, lat2, lon2) {
+    const dLon = this.toRadians(lon2 - lon1);
+    const lat1Rad = this.toRadians(lat1);
+    const lat2Rad = this.toRadians(lat2);
+    
+    const y = Math.sin(dLon) * Math.cos(lat2Rad);
+    const x = Math.cos(lat1Rad) * Math.sin(lat2Rad) - 
+              Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(dLon);
+    
+    let bearing = Math.atan2(y, x);
+    bearing = (bearing * 180 / Math.PI + 360) % 360;
+    return bearing
+
+    // const y = Math.sin(lon2-lon1) * Math.cos(lat2);
+    // const x = Math.cos(lat1)*Math.sin(lat2) -
+    //       Math.sin(lat1)*Math.cos(lat2)*Math.cos(lon2-lon1);
+    // const z = Math.atan2(y, x);
+    // const brng = (z*180/Math.PI + 360) % 360; // in degrees
+    // console.log({brng});
+    // return brng;
+  }
+
+  // Get direction from bearing
+  getDirection(bearing) {
+    console.log({bearing});
+    const directions = [
+      'north', 'north-northeast', 'northeast', 'east-northeast',
+      'east', 'east-southeast', 'southeast', 'south-southeast',
+      'south', 'south-southwest', 'southwest', 'west-southwest',
+      'west', 'west-northwest', 'northwest', 'north-northwest'
+    ];
+    
+    const index = Math.round(bearing / 22.5) % 16;
+    console.log({index});
+    console.log(directions[index]);
+    return directions[index];
+  }
+
+  // Check if guess is correct based on distance threshold
+  isGuessCorrect(guessLat, guessLon, targetLat, targetLon, thresholdKm = API_CONFIG.CORRECT_GUESS_THRESHOLD_KM) {
+    const distance = this.calculateDistance(guessLat, guessLon, targetLat, targetLon);
+    return distance <= thresholdKm;
+  }
+
+  // Submit a guess with geocoding validation
+  async submitGuess(guess) {
+    // First, geocode the guessed location
+    const geocodeResult = await this.geocodeLocation(guess.location, guess.country);
+    
+    if (!geocodeResult.success) {
+      return {
+        id: Date.now(),
+        location: guess.location,
+        country: guess.country,
+        timestamp: new Date(),
+        isCorrect: false,
+        error: geocodeResult.error,
+        distance: null,
+        geocodedLocation: null
+      };
+    }
+
+    // Calculate distance to target location
+    const distance = this.calculateDistance(
+      geocodeResult.latitude,
+      geocodeResult.longitude,
+      this.currentPlace.latitude,
+      this.currentPlace.longitude
+    );
+
+    // Calculate bearing and direction
+    const bearing = this.calculateBearing(
+      geocodeResult.latitude,
+      geocodeResult.longitude,
+      this.currentPlace.latitude,
+      this.currentPlace.longitude
+    );
+    const direction = this.getDirection(bearing);
+    console.log({direction});
+
+    // Check if guess is correct (within threshold)
+    const isCorrect = this.isGuessCorrect(
+      geocodeResult.latitude,
+      geocodeResult.longitude,
+      this.currentPlace.latitude,
+      this.currentPlace.longitude
+    );
+
     const guessData = {
       id: Date.now(),
       location: guess.location,
       country: guess.country,
       timestamp: new Date(),
-      isCorrect: this.checkGuess(guess)
+      isCorrect: isCorrect,
+      distance: Math.round(distance),
+      direction: direction,
+      bearing: Math.round(bearing),
+      geocodedLocation: {
+        latitude: geocodeResult.latitude,
+        longitude: geocodeResult.longitude,
+        formattedAddress: geocodeResult.formattedAddress
+      }
     };
+
+    console.log(geocodeResult)
+    this.guessResult = geocodeResult;
 
     this.guesses.push(guessData);
 
@@ -54,13 +223,6 @@ class GameService {
     return guessData;
   }
 
-  // Check if guess is correct
-  checkGuess(guess) {
-    const locationMatch = guess.location.toLowerCase().includes(this.currentPlace.name.toLowerCase());
-    const countryMatch = guess.country.toLowerCase().includes(this.currentPlace.country.toLowerCase());
-    return locationMatch && countryMatch;
-  }
-
   // Get game status
   getGameStatus() {
     const gameTime = Date.now() - this.startTime;
@@ -69,6 +231,7 @@ class GameService {
     
     return {
       currentHint: this.getCurrentHint(),
+      hintsGiven: this.hintsGiven,
       hintsUsed: this.currentHintIndex + 1,
       totalHints: this.currentPlace.sarcastic_descriptions.length,
       guessesMade: this.guesses.length,
@@ -130,6 +293,7 @@ class GameService {
   // Reset game
   resetGame() {
     this.currentHintIndex = 0;
+    this.hintsGiven = "";
     this.guesses = [];
     this.gameState = 'playing';
     this.startTime = Date.now();
@@ -141,9 +305,11 @@ class GameService {
     const baseZoom = 2;
     const zoomIncrement = 1;
     const currentZoom = Math.min(baseZoom + (this.currentHintIndex * zoomIncrement), 8);
-    
+
+    console.log("geocoderesult", this.guessResult )
     return {
-      center: [this.currentPlace.latitude, this.currentPlace.longitude],
+      center:[this.guessResult?.latitude | this.currentPlace.latitude, 
+        this.guessResult?.longitude | this.currentPlace.longitude],
       zoom: currentZoom
     };
   }
@@ -152,6 +318,7 @@ class GameService {
   getGuessFeedback(guess) {
     const distance = this.calculateDistance(guess);
     const direction = this.getDirection(guess);
+    console.log({distance, direction});
     
     if (distance < 100) {
       return "You're very close! The Fooqawhi are practically within shouting distance.";
@@ -161,28 +328,6 @@ class GameService {
       return `Not quite there yet. The Fooqawhi are approximately ${Math.round(distance)}km ${direction} from your guess.`;
     } else {
       return `The Fooqawhi are quite far from your guess - about ${Math.round(distance)}km ${direction}.`;
-    }
-  }
-
-  // Calculate approximate distance (simplified)
-  calculateDistance(guess) {
-    // This is a simplified distance calculation
-    // In a real app, you'd use proper geocoding and distance calculation
-    const latDiff = Math.abs(this.currentPlace.latitude - (guess.latitude || 0));
-    const lonDiff = Math.abs(this.currentPlace.longitude - (guess.longitude || 0));
-    return Math.sqrt(latDiff * latDiff + lonDiff * lonDiff) * 111; // Rough km conversion
-  }
-
-  // Get direction from guess to actual location
-  getDirection(guess) {
-    // Simplified direction calculation
-    const latDiff = this.currentPlace.latitude - (guess.latitude || 0);
-    const lonDiff = this.currentPlace.longitude - (guess.longitude || 0);
-    
-    if (Math.abs(latDiff) > Math.abs(lonDiff)) {
-      return latDiff > 0 ? 'north' : 'south';
-    } else {
-      return lonDiff > 0 ? 'east' : 'west';
     }
   }
 }

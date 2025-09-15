@@ -103,6 +103,14 @@
       "status": "Complete",
       "priority": "Medium",
       "dependencies": ["implement-game-logic", "implement-map-zoom"]
+    },
+    {
+      "id": "integrate-google-geocoding",
+      "title": "Integrate Google Geocoding API",
+      "description": "Rewrite game service to use Google Geocoding API for guess validation and coordinate lookup",
+      "status": "Complete",
+      "priority": "High",
+      "dependencies": ["implement-game-logic"]
     }
   ]
 }
